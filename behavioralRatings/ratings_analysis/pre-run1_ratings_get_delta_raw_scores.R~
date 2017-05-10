@@ -145,4 +145,4 @@ for (i in 1:nrow(data)){
 
 #subset the data to the subtracted questions and write out the data  
 data2<- data[,c(1,2,3,4,5,44:51)]
-write.csv(data,file=paste("/data/joy/BBL/studies/conte/subjectData/behavioralRatings/pre-post_delta_ratings_by_condition",date,".csv",sep=""))
+write.csv(data,file=paste("/data/joy/BBL/studies/conte/subjectData/behavioralRatings/pre-post_delta_ratings_by_condition",date,".csv",sep="")

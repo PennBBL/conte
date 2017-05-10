@@ -61,8 +61,8 @@ post$Answer.quest3<- (post$Answer.quest3)/4.2
 post$Answer.quest7<- (post$Answer.quest7)/4.2
 
 #write this data out to csv's so have the converted raw data saved
-write.csv(pre,file=paste("/data/joy/BBL/studies/conte/subjectData/ratingsPre/pre_ratings_data_",date,".csv",sep=""))
-write.csv(post,file=paste("/data/joy/BBL/studies/conte/subjectData/ratingsPost/run1_ratings_data_",date,".csv",sep=""))
+write.csv(pre,file=paste("/data/joy/BBL/studies/conte/subjectData/ratingsPre/pre_ratings_data_",date,".csv",sep="")
+write.csv(post,file=paste("/data/joy/BBL/studies/conte/subjectData/ratingsPost/run1_ratings_data_",date,".csv",sep="")
 
 
 #################PRE######################
