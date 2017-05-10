@@ -38,4 +38,3 @@ for k in $( ls -d /data/joy/BBL/studies/conte/processedData/$bblid/*$scanid/asso
 tail -1 "$k" | cut -d "," -f 2-100 >> /data/joy/BBL/studies/conte/subjectData/ratingsPost/run1_faces_"$date".csv
 done
 
-
