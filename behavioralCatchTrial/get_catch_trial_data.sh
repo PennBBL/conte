@@ -14,8 +14,8 @@ scanid=`echo $i | cut -d "_" -f 2`
 echo "Processing subject......." $scanid
 
 #create variables for each subject's run1 and run2 fear conditioning logfile
-logfile_run1=`ls -ltr -d /data/joy/BBL/studies/conte/rawData/$bblid/*$scanid/associated_files/ratings/post/*$scanid-fearConditioning_run1_wheel*.log | tail -1 | rev | cut -d " " -f1 | rev` 
-logfile_run2=`ls -ltr -d /data/joy/BBL/studies/conte/rawData/$bblid/*$scanid/associated_files/ratings/post/*$scanid-fearConditioning_rev_wheel*.log | tail -1 | rev | cut -d " " -f1 | rev` 
+logfile_run1=`ls -ltr -d /data/joy/BBL/studies/conte/rawData/$bblid/*$scanid/associated_files/behavioralRatings/post/*$scanid-fearConditioning_run1_wheel*.log | tail -1 | rev | cut -d " " -f1 | rev` 
+logfile_run2=`ls -ltr -d /data/joy/BBL/studies/conte/rawData/$bblid/*$scanid/associated_files/behavioralRatings/post/*$scanid-fearConditioning_rev_wheel*.log | tail -1 | rev | cut -d " " -f1 | rev` 
 
 #if the catch_trial directory doesn't exist then make it
 if [ ! `ls -d /data/joy/BBL/studies/conte/rawData/$bblid/*$scanid/associated_files/behavioralQa/catchTrials` ]; then
