@@ -1,0 +1,4 @@
+SPACE::NETWORK
+:#NAME#MAP#SPACE
+#JLF#$out_super/jlf/${subject[0]}_${subject[1]}_Labels.nii.gz#str
+#Glasser180#/data/joy/BBL/studies/reward/templateCohort/template/templateTransforms/180GlasserReward.nii.gz#std

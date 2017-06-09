@@ -10,7 +10,6 @@ export OUTPUT_DIR=$3
 export QA_TOOLS=/data/joy/BBL/applications/QAtools_v1.1/
 export FREESURFER_HOME=/share/apps/freesurfer/5.3.0/
 export PATH=$FREESURFER_HOME/bin/:$PATH
-subjnum=$4
 
 
 #set subject list, directory to output aggregated files to, and the filenames of those aggregate files
@@ -20,8 +19,8 @@ slist=$1
 outdir=$OUTPUT_DIR/cnr
 
 
-file=$outdir/"$subjnum"_cnr_buckner.csv
-euler_file=$outdir/"$subjnum"_euler_number.csv
+file=$outdir/cnr_buckner.csv
+euler_file=$outdir/euler_number.csv
 
 #create the aggregate files for cnr and euler
 echo "bblid,scanid,total,graycsflh,graycsfrh,graywhitelh,graywhiterh" > $file
@@ -37,7 +36,7 @@ for i in $(cat $slist);do
 		###############CNR#######################		
 		#calculate cnr for each subject and output all measures to a file in their stats folder
 		mri_cnr $surf $mri/orig.mgz > $SUBJECTS_DIR/$i/stats/$bblid"_"$scanid"_cnr.txt"
-		#create variables for total cnr, gray/csf for left and right hemispheres and gray/white for left and right hemispheres (total and cnr variables are grepping the information from the subject specific file, the 			variables then need to be cut in order to get just the number)
+		#create variables for total cnr, gray/csf for left and right hemispheres and gray/white for left and right hemispheres (total and cnr variables are grepping the information from the subject specific file, the variables then need to be cut in order to get just the number)
 		total=`grep "total CNR" $SUBJECTS_DIR/$i/stats/$bblid"_"$scanid"_cnr.txt"`
 		total2=`echo $total |cut -f 4 -d " "`
 		cnr=`grep "gray/white CNR" $SUBJECTS_DIR/$i/stats/$bblid"_"$scanid"_cnr.txt"`

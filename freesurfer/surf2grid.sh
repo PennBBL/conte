@@ -10,7 +10,7 @@ for i in $slist; do
 	bblid=`echo $i | cut -d "/" -f 8`
 	subjid=`echo $i | cut -d "/" -f 9`
 	echo $subjid
-	infile=`ls -d $i/MPRAGE*ipat2*moco3*/*_MPRAGE*ipat2*moco3*.nii.gz`
+	infile=`ls -d $i/MPRAGE*ipat2*moco3*/nifti/*MPRAGE*ipat2*moco3*.nii.gz`
 	#get the working subjects folder for that subject
 	surfpath=`ls -d /data/joy/BBL/studies/conte/processedData/freesurfer/$bblid/$subjid`
 	SUBJECTS_DIR="/data/joy/BBL/studies/conte/processedData/freesurfer/$bblid"

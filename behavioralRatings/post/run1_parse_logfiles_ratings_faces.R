@@ -42,7 +42,7 @@ qa<- qa[,c(1,3,5,6)]
 #Rename Code and a2$Code columns to Question and Answer
 colnames(qa)[2]<- "Question"
 colnames(qa)[3]<- "Answer"
-#add column (called Face) for which face goes with which questions ##########this needs fixing############
+#add column (called Face) for which face goes with which questions
 qa$Face<- c(rep("face_1077",4),rep("face_1086",4),"both",NA)
 #the answer column needs to be converted to something other than factors
 qa$Answer<- as.character(qa$Answer)

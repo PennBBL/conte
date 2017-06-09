@@ -81,6 +81,15 @@ done > temp3.txt
 paste temp2.txt temp3.txt > $output_dir/cnr/snr.txt
 
 #remove temporary files
-rm -f temp*.txt
+rm -f temp*.txt  
+
+#Run script to input the flagged subject csv's and determine is the subject is flagged for automatic FS QA. This script also will output the total number of flags per outlier into a csv table.
+
+auto_flag=$output_dir/all.flags.n103.csv
+euler_flag=$output_dir/cnr_euler_flags_n102.csv
+
+/share/apps/R/R-3.2.3/bin/R --slave --file=/data/joy/BBL/projects/conteReproc2017/freesurfer/sum_flags_auto_qa.R --args $output_dir $auto_flag $euler_flag
+
+
 
 

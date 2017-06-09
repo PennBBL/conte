@@ -1,0 +1,11 @@
+Found perfect (with the wget fix)  ~/.Rprofile
+ERROR: You cannot give recon-all a folder as input. It must be an image file.
+If you have multiple files, you need multiple -i flags.
+Linux compute-0-4.local 2.6.32-642.15.1.el6.x86_64 #1 SMP Fri Feb 24 14:31:22 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+
+recon-all -s  exited with ERRORS at Fri May 19 05:19:52 EDT 2017
+
+For more details, see the log file 
+To report a problem, see http://surfer.nmr.mgh.harvard.edu/fswiki/BugReporting
+
+ERROR: must specify a subject id

@@ -66,30 +66,134 @@ thickness.data<-thickness.data[,-1]
 thickness.data<-merge(thickness.data, rh.thickness.data, all=TRUE,by=c("scanid","bblid"))
 rm('rh.thickness.data')
 
-### FLAG ROI OUTLIERS ###
-#########################
+### CREATE DATA TO CALCULATE SD FROM ###
+#########################################
 lh.names<-grep('lh', names(thickness.data), value=TRUE)
 rh.names<-sub('lh', 'rh', lh.names)
+
+tmp_lh<-data.frame(matrix(NA, nrow=(nrow(thickness.data)),ncol=length(lh.names)+1))
+tmp_lh[1]<- thickness.data$scanid
+colnames(tmp_lh)[1]<-"scanid"
+colnames(tmp_lh)[2:ncol(tmp_lh)]<- lh.names
+
+tmp_rh<-data.frame(matrix(NA, nrow=(nrow(thickness.data)),ncol=length(rh.names)+1))
+tmp_rh[1]<- thickness.data$scanid
+colnames(tmp_rh)[1]<-"scanid"
+colnames(tmp_rh)[2:ncol(tmp_rh)]<- rh.names
+
+#then calculate the 2SD cut off for each lh.name and rh.name and calculate if each subject in the full dataset is a SD outlier based on the threshold you set (sdthresh)
+
+for (i in lh.names){
+
+sd_thresh<-(sdthresh*(sd(thickness.data[,i])))
+
+sd_above_value<- mean(thickness.data[,i])+sd_thresh
+sd_below_value<- mean(thickness.data[,i])-sd_thresh
+
+#x<- cbind(sd_above_value,sd_below_value) 
+#output<- cbind(output,x)
+
+tmp_lh[i]<- "0"
+tmp_lh[i][thickness.data[i]>sd_above_value]<- "1"
+tmp_lh[i][thickness.data[i]<sd_below_value]<- "1"
+
+}
+for (i in rh.names){
+
+sd_thresh<-(sdthresh*(sd(thickness.data[,i])))
+
+sd_above_value<- mean(thickness.data[,i])+sd_thresh
+sd_below_value<- mean(thickness.data[,i])-sd_thresh
+
+tmp_rh[i]<- "0"
+tmp_rh[i][thickness.data[i]>sd_above_value]<- "1"
+tmp_rh[i][thickness.data[i]<sd_below_value]<- "1"
+
+}
+
+tmp<- cbind(tmp_lh,tmp_rh[2:ncol(tmp_rh)])
+tmp2<-data.frame(sapply(tmp[2:ncol(tmp)], function(x) as.numeric(as.character(x))))
+tmp2<- cbind(tmp[1],tmp2)
+
+###get number of thickness ROIs (sum of 1's just calculated for each subject)
 # count number of outlying regions for each subject
-thickness.data$noutliers.thickness.rois<-rowSums(abs(scale(thickness.data[,c(lh.names, rh.names)]))> sdthresh)
-# number of outliers in laterality for each subject
-thickness.data$noutliers.lat.thickness.rois<-rowSums(abs(scale(	(thickness.data[,lh.names] - thickness.data[,rh.names])/(thickness.data[,lh.names] + thickness.data[,rh.names])	))> sdthresh)
+thickness.data$noutliers.thickness.rois<-rowSums(tmp2[2:ncol(tmp2)])
+
+####number of outliers in laterality for each subject
+tmp_laterality<-data.frame(matrix(NA, nrow=(nrow(thickness.data)),ncol=length(lh.names)+1))
+tmp_laterality[1]<- thickness.data$scanid
+colnames(tmp_laterality)[1]<-"scanid"
+colnames(tmp_laterality)[2:ncol(tmp_laterality)]<- lh.names
+
+
+for (z in seq(1, length(lh.names))){
+i <- lh.names[z]
+  
+r_name<- paste("rh",substring(i,4,10000),sep="_")
+
+sd_above_value<-(mean((thickness.data[,i] - thickness.data[,r_name])/(thickness.data[,i] + thickness.data[,r_name]))+(sdthresh*(sd((thickness.data[,i] - thickness.data[,r_name])/(thickness.data[,i] + thickness.data[,r_name])))))
+sd_below_value<-(mean((thickness.data[,i] - thickness.data[,r_name])/(thickness.data[,i] + thickness.data[,r_name]))-(sdthresh*(sd((thickness.data[,i] - thickness.data[,r_name])/(thickness.data[,i] + thickness.data[,r_name])))))
+
+tmp_laterality[,z+1]<- "0"
+tmp_laterality[,z+1][which((thickness.data[,i] - thickness.data[,r_name])/(thickness.data[,i] + thickness.data[,r_name])>sd_above_value)]<- "1"
+tmp_laterality[,z+1][which((thickness.data[,i] - thickness.data[,r_name])/(thickness.data[,i] + thickness.data[,r_name])<sd_below_value)]<- "1"
+
+tmp_laterality[,z+1]<- as.numeric(tmp_laterality[,z+1])
+
+}
+
+
+thickness.data$noutliers.lat.thickness.rois<-rowSums(tmp_laterality[2:ncol(tmp_laterality)])
+
+
+###DO THE SAME FOR MEAN FLAGS
+thickness.data.mean<-full
+
+mean_names<- c('meanthickness', 'totalarea', "SubCortGrayVol", "CortexVol", "CorticalWhiteMatterVol", "cnr","snr")
+
+tmp_mean<-data.frame(matrix(NA, nrow=(nrow(full)),ncol=length(mean_names)+1))
+tmp_mean[1]<- full$scanid
+colnames(tmp_mean)[1]<-"scanid"
+colnames(tmp_mean)[2:ncol(tmp_mean)]<- mean_names
+
+#then calculate the 2SD cut off for each mean and calculate if each subject in the full dataset is a SD outlier based on the threshold you set (sdthresh) 
+
+for (i in mean_names){
+  
+  sd_thresh<-(sdthresh*(sd(thickness.data.mean[,i])))
+  
+  sd_above_value<- mean(thickness.data.mean[,i])+sd_thresh
+  sd_below_value<- mean(thickness.data.mean[,i])-sd_thresh
+  
+  tmp_mean[i]<- "0"
+  tmp_mean[i][full[i]>sd_above_value]<- "1"
+  tmp_mean[i][full[i]<sd_below_value]<- "1"
+  
+}
+colnames(tmp_mean)[2:ncol(tmp_mean)]<- c(paste(mean_names, 'outlier', sep="_"))
+
 
 ### MERGE RESULTS OF ROI FLAGS WITH MEAN DATA ###
 #################################################
 thickness.data<-thickness.data[,c('bblid', 'scanid', 'noutliers.thickness.rois', 'noutliers.lat.thickness.rois')]
 full$noutliers.thickness.rois<- thickness.data$noutliers.thickness.rois[match(full$scanid,thickness.data$scanid)]
 full$noutliers.lat.thickness.rois<- thickness.data$noutliers.lat.thickness.rois[match(full$scanid,thickness.data$scanid)]
+full$meanthickness_outlier<- tmp_mean$meanthickness_outlier[match(full$scanid,tmp_mean$scanid)]
+full$totalarea_outlier<- tmp_mean$totalarea_outlier[match(full$scanid,tmp_mean$scanid)]
+full$SubCortGrayVol_outlier<- tmp_mean$SubCortGrayVol_outlier[match(full$scanid,tmp_mean$scanid)]
+full$CortexVol_outlier<- tmp_mean$CortexVol_outlier[match(full$scanid,tmp_mean$scanid)]
+full$CorticalWhiteMatterVol_outlier<- tmp_mean$CorticalWhiteMatterVol_outlier[match(full$scanid,tmp_mean$scanid)]
+full$cnr_outlier<- tmp_mean$cnr_outlier[match(full$scanid,tmp_mean$scanid)]
+full$snr_outlier<- tmp_mean$snr_outlier[match(full$scanid,tmp_mean$scanid)]
 
 ### FLAG ON MEAN, CNR, SNR, AND NUMBER OF ROI FLAGS ###
 #######################################################
 flags<-names(full)[which(!names(full) %in% c('bblid', 'scanid'))]
-mean.flags<-c('meanthickness', 'totalarea', "SubCortGrayVol", "CortexVol", "CorticalWhiteMatterVol")
-full[,paste(mean.flags, 'outlier', sep="_")]<-as.numeric(abs(scale(full[,mean.flags]))>sdthresh)
-full$cnr_outlier<-as.numeric(scale(full$cnr)<(-sdthresh))
-#if(is.data.frame(snr.data))
-full$snr_outlier<-as.numeric(scale(full$snr)<(-sdthresh))
 
+
+
+### WRITE DATA OUT ###
+######################
 noutliers.flags<-grep('noutlier', names(full), value=T)
 full[,paste(noutliers.flags, 'outlier', sep="_")]<-as.numeric(scale(full[,noutliers.flags])>sdthresh)
 write.csv(full, file.path(stats.dir, paste('all.flags.n' , nrow(full),'.csv', sep='')), quote=FALSE, row.names=FALSE)

@@ -29,17 +29,17 @@ pairing$Code<- as.character(pairing$Code)
 
 #set appropriate variables for onset times of different stimuli depending on which order the subject had
 if(unlist(strsplit(pairing[1,4],split="_"))[4]=="tone"){
-  catch<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_0_2/run1/catch.txt",fill=T)
-  tone<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_0_2/run1/aversive_tone.txt",fill=T)
-  face_av<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_0_2/run1/face1_aversive.txt",fill=T)
-  face_notone<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_0_2/run1/face1_notone.txt",fill=T)
-  face_neu<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_0_2/run1/face2_notone.txt",fill=T)
+  catch<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order0_2/run1/catch.txt",fill=T)
+  tone<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order0_2/run1/aversive_tone.txt",fill=T)
+  face_av<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order0_2/run1/face1_aversive.txt",fill=T)
+  face_notone<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order0_2/run1/face1_notone.txt",fill=T)
+  face_neu<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order0_2/run1/face2_notone.txt",fill=T)
 } else if(unlist(strsplit(pairing[1,4],split="_"))[4]=="notone"){
-  catch<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_1_3/run1/catch.txt",fill=T) 
-  tone<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_1_3/run1/aversive_tone.txt",fill=T)
-  face_neu<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_1_3/run1/face1_notone.txt",fill=T)
-  face_av<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_1_3/run1/face2_aversive.txt",fill=T)
-  face_notone<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order_1_3/run1/face2_notone.txt",fill=T)
+  catch<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order1_3/run1/catch.txt",fill=T) 
+  tone<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order1_3/run1/aversive_tone.txt",fill=T)
+  face_neu<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order1_3/run1/face1_notone.txt",fill=T)
+  face_av<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order1_3/run1/face2_aversive.txt",fill=T)
+  face_notone<- read.table("/data/joy/BBL/studies/conte/fmriDesignFiles/order1_3/run1/face2_notone.txt",fill=T)
 } else {
   Print("ERROR NEITHER ORDER 0 2 NOR ORDER 1 3")
 }

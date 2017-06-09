@@ -31,7 +31,7 @@ a2<- as.data.frame(data1[a,])
 #reorder data files by Trial
 q2<- q2[order(q2$Trial),]
 a2<- a2[order(a2$Trial),]
-#delete unnecessary rows (the pre scan asks about 17 faces, there are only 4 in the task) ######this will need adjusting#########################
+#delete unnecessary rows (the pre scan asks about 17 faces, there are only 4 in the task) 
 q2<-q2[c(29:32,37:40),]
 a2<-a2[c(29:32,37:40),]
 #combine two data files so that question and answer are next to eachother
@@ -43,7 +43,7 @@ qa<- qa[,c(1,3,5,6)]
 #Rename Code and a2$Code columns to Question and Answer
 colnames(qa)[2]<- "Question"
 colnames(qa)[3]<- "Answer"
-#add column (called Face) for which face goes with which questions ######this will need adjusting
+#add column (called Face) for which face goes with which questions 
 qa$Face<- c(rep("face_1077",4),rep("face_1086",4))
 #the answer column needs to be converted to something other than factors
 qa$Answer<- as.character(qa$Answer)
